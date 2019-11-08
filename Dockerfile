@@ -1,7 +1,7 @@
 FROM python:3.7.4-buster
 LABEL maintainer="Shippeo"
 
-ARG PIPELINEWISE_HOME=/usr/local/pipelinewise
+ARG PIPELINEWISE_HOME=/app
 
 RUN apt-get -qq update && apt-get -qqy install \
         apt-utils \
@@ -25,7 +25,6 @@ RUN mkdir -p ${PIPELINEWISE_HOME}
 WORKDIR ${PIPELINEWISE_HOME}
 
 RUN cd /app \
-    && ./install.sh --acceptlicenses --nousage --notestextras \
-    && ln -s ${PIPELINEWISE_HOME}/.pipelinewise /app/.pipelinewise
+    && ./install.sh --acceptlicenses --nousage --notestextras 
 
 ENTRYPOINT ["/app/entrypoint.sh"]
