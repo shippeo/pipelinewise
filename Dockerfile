@@ -1,9 +1,10 @@
-FROM python:3.7.4-buster
+FROM python:3.7.7-slim-buster
 
 RUN apt-get -qq update && apt-get -qqy install \
         apt-utils \
         alien \
         libaio1 \
+        mongo-tools \
     && pip install --upgrade pip
 
 # Oracle Instant Clinet for tap-oracle
@@ -13,7 +14,7 @@ RUN alien -i /app/oracle-instantclient.rpm --scripts && rm -rf /app/oracle-insta
 COPY . /app
 
 RUN cd /app \
-    && ./install.sh --acceptlicenses --nousage --notestextras \
+    && ./install.sh --connectors=all --acceptlicenses --nousage --notestextras \
     && ln -s /root/.pipelinewise /app/.pipelinewise
 
 ENTRYPOINT ["/app/entrypoint.sh"]
